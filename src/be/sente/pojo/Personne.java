@@ -60,6 +60,4 @@ public class Personne {
 		this.password = password;
 	}
 	
-	
-	
 }
