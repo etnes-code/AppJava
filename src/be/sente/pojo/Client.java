@@ -1,9 +1,12 @@
 package be.sente.pojo;
 
-public class Client extends Personne {
+import java.io.Serializable;
 
-	public Client(String nom, String prenom, String rue, int numRue, int cp, String email, String password) {
-		super(nom, prenom, rue, numRue, cp, email, password);
+public class Client extends Personne implements Serializable {
+	
+	private static final long serialVersionUID = 6896615520018342125L;
+	public Client(String nom, String prenom, String rue, int numRue, int cp, String ville, String email, String password) {
+		super(nom, prenom, rue, numRue, cp,ville, email, password);
 		
 	}
 }

@@ -1,9 +1,16 @@
 package be.sente.pojo;
 
-public class Organisateur extends Personne {
+import java.io.Serializable;
 
-	public Organisateur(String nom, String prenom, String rue, int numRue, int cp, String email, String password) {
-		super(nom, prenom, rue, numRue, cp, email, password);
+public class Organisateur extends Personne implements Serializable {
+	private static final long serialVersionUID = -1625130318528201331L;
+	private static final String discriminator="Organisateur";
+	public Organisateur(String nom, String prenom, String rue, int numRue, int cp, String ville, String email, String password) {
+		super(nom, prenom, rue, numRue, cp, ville, email, password);
 		
 	}
+	public static String getDiscriminator() {
+		return discriminator;
+	}
+	
 }

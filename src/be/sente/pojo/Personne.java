@@ -1,19 +1,24 @@
 package be.sente.pojo;
 
-public class Personne {
+import java.io.Serializable;
+
+public class Personne implements Serializable {
+	private static final long serialVersionUID = -7002606308230390313L;
 	protected String nom;
 	protected String prenom;
 	protected String rue;
 	protected int numRue;
 	protected int cp;
+	protected String ville;
 	protected String email;
 	protected String password;
-	public Personne(String nom, String prenom, String rue, int numRue, int cp, String email, String password) {
+	public Personne(String nom, String prenom, String rue, int numRue, int cp, String ville, String email, String password) {
 		this.nom = nom;
 		this.prenom = prenom;
 		this.rue = rue;
 		this.numRue = numRue;
 		this.cp = cp;
+		this.ville=ville;
 		this.email = email;
 		this.password = password;
 	}
@@ -46,6 +51,12 @@ public class Personne {
 	}
 	public void setCp(int cp) {
 		this.cp = cp;
+	}
+	public String getVille() {
+		return ville;
+	}
+	public void setVille(String ville) {
+		this.ville = ville;
 	}
 	public String getEmail() {
 		return email;
