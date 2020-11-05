@@ -1,6 +1,8 @@
 package be.sente.DAO;
 import java.sql.*;
 
+import be.sente.pojo.Personne;
+
 public abstract class DAO<T> {
 protected Connection connect = null;
 	public DAO(Connection conn){
@@ -13,5 +15,6 @@ protected Connection connect = null;
 	public abstract boolean update(T obj);
 	
 	public abstract T find(int id);
+	public  abstract T findUser(String mail, String pwd);
 
 }

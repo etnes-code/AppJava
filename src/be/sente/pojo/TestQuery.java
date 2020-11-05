@@ -7,8 +7,13 @@ import be.sente.DAO.PersonneDAO;
 public class TestQuery {
 
 	public static void main(String[] args) {
-		DAO<Personne> personne1= new PersonneDAO(BosquetConnection.getInstance());
-		Personne p1= new Client("sente","quentin","rue des champs",43,6200,"Châtelet","Sente.quentin@gmail.com","pwd");
+		DAO<Personne> personne1 = new PersonneDAO(BosquetConnection.getInstance());
+		
+		Personne p= new Personne();
+		p=personne1.findUser("hdshsdhd","pwd");
+		
+		// p1= new Client("sente","quentin","rue des champs",43,6200,"Châtelet","Sente.quentin@gmail.com","pwd");
+
 	}
 
 }

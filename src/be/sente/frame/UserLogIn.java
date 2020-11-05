@@ -6,7 +6,15 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import be.sente.DAO.BosquetConnection;
+import be.sente.DAO.DAO;
+import be.sente.DAO.PersonneDAO;
+import be.sente.pojo.*;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -75,6 +83,20 @@ public class UserLogIn extends JFrame {
 		textFieldPassWord.setColumns(10);
 		
 		JButton btnConnexion = new JButton("Se connecter");
+		btnConnexion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//vérifier si les champs sont vides
+				DAO<Personne> personnedao=new PersonneDAO(BosquetConnection.getInstance());
+				Personne user=new Personne();
+				user=personnedao.findUser(textFieldEmail.getText(),textFieldPassWord.getText());
+				if(user.getClass().getSimpleName().equals("Personne")) {
+					JOptionPane.showMessageDialog(null, "Email ou mot de passe incorrecte");
+				}else {
+					JOptionPane.showMessageDialog(null,"connexion ok" );
+				}
+				
+			}
+		});
 		btnConnexion.setBounds(295, 141, 129, 23);
 		contentPane.add(btnConnexion);
 		

@@ -158,25 +158,36 @@ public class Register extends JFrame {
 		JButton btnValider = new JButton("Valider");
 		btnValider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+
+				// verifier si les champs son correctement rempli
+
+				// verifier si l'utilisateur existe déjà
+
+				// inserer un nouveau utilisateur dans la base de donnée
 				DAO<Personne> personnedao = new PersonneDAO(BosquetConnection.getInstance());
-				
-				if (comboBoxUser.getSelectedItem().toString().equals("Client")) { // 
-					Personne user = new Client(textFieldNom.getText(), textFieldPrenom.getText(), textFieldRue.getText(),
-							Integer.parseInt(textFieldNum.getText()), Integer.parseInt(textFieldCp.getText()),
-							textFieldVille.getText(), textFieldEmail.getText(), textFieldPassWord.getText());
+				if (comboBoxUser.getSelectedItem().toString().equals("Client")) { // si c'est un client
+					Personne user = new Client(textFieldNom.getText(), textFieldPrenom.getText(),
+							textFieldRue.getText(), Integer.parseInt(textFieldNum.getText()),
+							Integer.parseInt(textFieldCp.getText()), textFieldVille.getText(), textFieldEmail.getText(),
+							textFieldPassWord.getText());
 					personnedao.create(user);
-				} else if (comboBoxUser.getSelectedItem().toString().equals("Organisateur")) {
-					Personne user = new Organisateur(textFieldNom.getText(), textFieldPrenom.getText(), textFieldRue.getText(),
-							Integer.parseInt(textFieldNum.getText()), Integer.parseInt(textFieldCp.getText()),
-							textFieldVille.getText(), textFieldEmail.getText(), textFieldPassWord.getText());
+				} else if (comboBoxUser.getSelectedItem().toString().equals("Organisateur")) { // si c'est un
+																								// organisateur
+					Personne user = new Organisateur(textFieldNom.getText(), textFieldPrenom.getText(),
+							textFieldRue.getText(), Integer.parseInt(textFieldNum.getText()),
+							Integer.parseInt(textFieldCp.getText()), textFieldVille.getText(), textFieldEmail.getText(),
+							textFieldPassWord.getText());
 					personnedao.create(user);
-				} else if (comboBoxUser.getSelectedItem().toString().equals("Artiste")) {
-					Personne user = new Artistes(textFieldNom.getText(), textFieldPrenom.getText(), textFieldRue.getText(),
-							Integer.parseInt(textFieldNum.getText()), Integer.parseInt(textFieldCp.getText()),
-							textFieldVille.getText(), textFieldEmail.getText(), textFieldPassWord.getText());
+				} else if (comboBoxUser.getSelectedItem().toString().equals("Artiste")) { // si c'est un artiste
+					Personne user = new Artistes(textFieldNom.getText(), textFieldPrenom.getText(),
+							textFieldRue.getText(), Integer.parseInt(textFieldNum.getText()),
+							Integer.parseInt(textFieldCp.getText()), textFieldVille.getText(), textFieldEmail.getText(),
+							textFieldPassWord.getText());
 					personnedao.create(user);
 				}
-				
+				Register w= new Register();
+				w.setVisible(false);
+				w.dispose();
 			}
 		});
 		btnValider.setBounds(20, 356, 89, 23);

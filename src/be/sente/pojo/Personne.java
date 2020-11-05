@@ -12,6 +12,7 @@ public class Personne implements Serializable {
 	protected String ville;
 	protected String email;
 	protected String password;
+	public Personne() {}
 	public Personne(String nom, String prenom, String rue, int numRue, int cp, String ville, String email, String password) {
 		this.nom = nom;
 		this.prenom = prenom;
