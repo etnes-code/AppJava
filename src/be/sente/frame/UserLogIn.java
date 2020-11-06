@@ -92,7 +92,12 @@ public class UserLogIn extends JFrame {
 				if(user.getClass().getSimpleName().equals("Personne")) {
 					JOptionPane.showMessageDialog(null, "Email ou mot de passe incorrecte");
 				}else {
-					JOptionPane.showMessageDialog(null,"connexion ok" );
+					Home h= new Home(user);
+					UserLogIn w=new UserLogIn();
+					
+					h.setVisible(true);
+					w.dispose();
+					
 				}
 				
 			}
