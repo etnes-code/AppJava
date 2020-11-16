@@ -77,7 +77,7 @@ public class Register extends JFrame {
 		contentPane.add(lblEmail_1);
 
 		JComboBox comboBoxUser = new JComboBox();
-		comboBoxUser.setModel(new DefaultComboBoxModel(new String[] { "Client", "Artiste", "Organisateur" }));
+		comboBoxUser.setModel(new DefaultComboBoxModel(new String[] { "Client", "Organisateur" }));
 		comboBoxUser.setBounds(137, 40, 125, 25);
 		contentPane.add(comboBoxUser);
 
@@ -178,14 +178,8 @@ public class Register extends JFrame {
 							Integer.parseInt(textFieldCp.getText()), textFieldVille.getText(), textFieldEmail.getText(),
 							textFieldPassWord.getText());
 					personnedao.create(user);
-				} else if (comboBoxUser.getSelectedItem().toString().equals("Artiste")) { // si c'est un artiste
-					Personne user = new Artistes(textFieldNom.getText(), textFieldPrenom.getText(),
-							textFieldRue.getText(), Integer.parseInt(textFieldNum.getText()),
-							Integer.parseInt(textFieldCp.getText()), textFieldVille.getText(), textFieldEmail.getText(),
-							textFieldPassWord.getText());
-					personnedao.create(user);
 				}
-				Register w= new Register();
+				Register w = new Register();
 				w.setVisible(false);
 				w.dispose();
 			}
@@ -198,5 +192,6 @@ public class Register extends JFrame {
 		contentPane.add(btnReset);
 
 	}
+	
 
 }

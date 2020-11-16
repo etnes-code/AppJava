@@ -20,6 +20,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Home extends JFrame {
 
@@ -55,12 +57,13 @@ public class Home extends JFrame {
 		Personne user= new Personne();
 		user=(Personne)obj;
 		
+		
 		JLabel lblTitleSpectacle = new JLabel("Liste de vos spectacles");
 		lblTitleSpectacle.setFont(new Font("Trebuchet MS", Font.PLAIN, 12));
 		lblTitleSpectacle.setBounds(329, 82, 245, 25);
 		contentPane.add(lblTitleSpectacle);
 		
-		JLabel lblTitle = new JLabel("Binevenue "+user.getPrenom()+" "+user.getNom());
+		JLabel lblTitle = new JLabel("Bienvenue "+user.getPrenom()+" "+user.getNom());
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitle.setFont(new Font("Tw Cen MT", Font.PLAIN, 20));
 		lblTitle.setBounds(155, 29, 320, 25);
@@ -71,6 +74,10 @@ public class Home extends JFrame {
 		contentPane.add(listSpectacle);
 		
 		JButton btnNewSpectacle = new JButton("Nouveau");
+		btnNewSpectacle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnNewSpectacle.setBounds(30, 165, 89, 60);
 		contentPane.add(btnNewSpectacle);
 		
@@ -97,7 +104,7 @@ public class Home extends JFrame {
 		
 		
 		
-		
+	
 		
 	}
 }

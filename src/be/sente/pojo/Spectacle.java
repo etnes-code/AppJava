@@ -11,8 +11,19 @@ public class Spectacle  implements  Serializable{
 	private Configuration config;
 	private ArrayList<Representation> listRepresentation;
 	
+	public Spectacle(String titre, int nbrPlaceParClient) {
+		this.Titre=titre;
+		this.nbrPlaceParClient= nbrPlaceParClient;
+		listRepresentation= new ArrayList<Representation>();
+		
+	}
+	
 	
 	
 	//créer une methode pour ajouter à la listedes répresentation
+	public void addToList(Representation rep) {
+		listRepresentation.add(rep);
+		
+	}
 
 }

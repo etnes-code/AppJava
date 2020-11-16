@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import be.sente.DAO.BosquetConnection;
 import be.sente.DAO.DAO;
+import be.sente.DAO.FactoryDAO;
 import be.sente.DAO.PersonneDAO;
 import be.sente.pojo.*;
 
@@ -86,7 +87,9 @@ public class UserLogIn extends JFrame {
 		btnConnexion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//vérifier si les champs sont vides
-				DAO<Personne> personnedao=new PersonneDAO(BosquetConnection.getInstance());
+				FactoryDAO adf=new FactoryDAO();
+				DAO<Personne> personnedao=adf.getPersonneDAO();	
+				//DAO<Personne> personnedao=new PersonneDAO(BosquetConnection.getInstance());
 				Personne user=new Personne();
 				user=personnedao.findUser(textFieldEmail.getText(),textFieldPassWord.getText());
 				if(user.getClass().getSimpleName().equals("Personne")) {
@@ -96,8 +99,7 @@ public class UserLogIn extends JFrame {
 					UserLogIn w=new UserLogIn();
 					
 					h.setVisible(true);
-					w.dispose();
-					
+					w.dispose();					
 				}
 				
 			}

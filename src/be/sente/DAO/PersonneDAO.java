@@ -45,7 +45,6 @@ public class PersonneDAO extends DAO<Personne> {
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
 					.executeQuery("SELECT * FROM User WHERE Email LIKE '" + mail + "' AND Password LIKE '" + pwd + "'");
-			if (result.first()) {
 				if (result.first()) {
 					String disc = result.getString("Discriminator");
 					switch (disc) {
@@ -59,15 +58,8 @@ public class PersonneDAO extends DAO<Personne> {
 								result.getString("Rue"), result.getInt("Numero"), result.getInt("CodePostal"),
 								result.getString("Ville"), result.getString("Email"), result.getString("Password"));
 						break;
-					case "Artistes":
-						user=new Artistes(result.getString("Nom"), result.getString("Prenom"),
-								result.getString("Rue"), result.getInt("Numero"), result.getInt("CodePostal"),
-								result.getString("Ville"), result.getString("Email"), result.getString("Password"));
-						break;
-
 					}
-				}
-			}
+				}	
 
 		} catch (SQLException e) {
 			e.printStackTrace();
