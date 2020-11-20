@@ -7,10 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import be.sente.DAO.AbstractDAOFactory;
 import be.sente.DAO.BosquetConnection;
 import be.sente.DAO.DAO;
 import be.sente.DAO.PersonneDAO;
-import be.sente.pojo.Client;
 import be.sente.pojo.*;
 
 import javax.swing.JLabel;
@@ -164,7 +164,8 @@ public class Register extends JFrame {
 				// verifier si l'utilisateur existe déjà
 
 				// inserer un nouveau utilisateur dans la base de donnée
-				DAO<Personne> personnedao = new PersonneDAO(BosquetConnection.getInstance());
+				AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
+				DAO<Personne> personnedao=adf.getPersonneDAO();	
 				if (comboBoxUser.getSelectedItem().toString().equals("Client")) { // si c'est un client
 					Personne user = new Client(textFieldNom.getText(), textFieldPrenom.getText(),
 							textFieldRue.getText(), Integer.parseInt(textFieldNum.getText()),

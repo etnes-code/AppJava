@@ -38,8 +38,7 @@ public class PersonneDAO extends DAO<Personne> {
 	public boolean update(Personne obj) {
 		return false;
 	}
-
-	public Personne findUser(String mail, String pwd) {
+	public Personne findUser(String mail,String pwd) {
 		Personne user=new Personne();
 		try {
 			ResultSet result = this.connect
@@ -67,4 +66,10 @@ public class PersonneDAO extends DAO<Personne> {
 		return user;
 
 	}
+	public Personne find(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
 }

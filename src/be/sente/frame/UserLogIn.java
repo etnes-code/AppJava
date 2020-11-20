@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import be.sente.DAO.AbstractDAOFactory;
 import be.sente.DAO.BosquetConnection;
 import be.sente.DAO.DAO;
 import be.sente.DAO.FactoryDAO;
@@ -87,19 +88,19 @@ public class UserLogIn extends JFrame {
 		btnConnexion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//vérifier si les champs sont vides
-				FactoryDAO adf=new FactoryDAO();
+				
+				AbstractDAOFactory adf = AbstractDAOFactory.getFactory(AbstractDAOFactory.DAO_FACTORY);
 				DAO<Personne> personnedao=adf.getPersonneDAO();	
-				//DAO<Personne> personnedao=new PersonneDAO(BosquetConnection.getInstance());
 				Personne user=new Personne();
 				user=personnedao.findUser(textFieldEmail.getText(),textFieldPassWord.getText());
 				if(user.getClass().getSimpleName().equals("Personne")) {
 					JOptionPane.showMessageDialog(null, "Email ou mot de passe incorrecte");
 				}else {
 					Home h= new Home(user);
-					UserLogIn w=new UserLogIn();
-					
+					UserLogIn w=new UserLogIn();					
 					h.setVisible(true);
-					w.dispose();					
+					w.setVisible(false);
+					dispose();			
 				}
 				
 			}

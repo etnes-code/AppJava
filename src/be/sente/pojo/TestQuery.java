@@ -12,7 +12,20 @@ public class TestQuery {
 		
 		
 		FactoryDAO adf=new FactoryDAO();
-		DAO<Personne> personnedao=adf.getPersonneDAO();
+		
+	
+		//DAO<Personne> personnedao=adf.getPersonneDAO();
+		/*PlanningSalle p1= new PlanningSalle("16-05-2020","16-05-2020");		
+		DAO<PlanningSalle> planningdao=adf.getPlanningSalleDAO();
+		planningdao.create(p1);
+		System.out.println("ok planning");
+		Spectacle s1=new Spectacle("hello world","bob dylan",2);
+		DAO<Spectacle> spectacledao=adf.getSpectacleDAO();
+		spectacledao.create(s1);
+		System.out.println("ok spectacle");*/
+		Configuration c1= new Configuration("Assis version concert","version concert");
+		DAO<Configuration>configdao=adf.getConfiguration();
+		configdao.create(c1);
 		
 		
 		//Personne p= new Personne();

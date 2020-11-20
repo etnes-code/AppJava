@@ -9,32 +9,25 @@ import javax.swing.DefaultListModel;
 public class PlanningSalle implements Serializable {
 	
 	private static final long serialVersionUID = -5918981801466838303L;
-	LocalDate dateDebutR;
-	LocalDate dateFinR;
-	public PlanningSalle(LocalDate dateDebutR, LocalDate dateFinR) {
+	String dateDebutR;
+	String dateFinR;
+	public PlanningSalle(String dateDebutR, String dateFinR) {
 		super();
 		this.dateDebutR = dateDebutR;
 		this.dateFinR = dateFinR;
 	}
-	public LocalDate getDateDebutR() {
+	public String getDateDebutR() {
 		return dateDebutR;
 	}
-	public void setDateDebutR(LocalDate dateDebutR) {
+	public void setDateDebutR(String dateDebutR) {
 		this.dateDebutR = dateDebutR;
 	}
-	public LocalDate getDateFinR() {
+	public String getDateFinR() {
 		return dateFinR;
 	}
-	public void setDateFinR(LocalDate dateFinR) {
+	public void setDateFinR(String dateFinR) {
 		this.dateFinR = dateFinR;
 	}
-	@Override
-	public String toString() {
-		return   ""+getDateDebutR()+" 12:00:00 jusqu'a "+getDateFinR()+" 12:00:00" ;
-	}
-	
-	
-	
 	
 	
 }

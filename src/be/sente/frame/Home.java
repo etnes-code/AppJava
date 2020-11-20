@@ -26,6 +26,7 @@ import java.awt.event.ActionEvent;
 public class Home extends JFrame {
 
 	private JPanel contentPane;
+	private  Personne  user= new Personne();
 
 	/**
 	 * Launch the application.
@@ -54,7 +55,7 @@ public class Home extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		Personne user= new Personne();
+		
 		user=(Personne)obj;
 		
 		
@@ -76,33 +77,28 @@ public class Home extends JFrame {
 		JButton btnNewSpectacle = new JButton("Nouveau");
 		btnNewSpectacle.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ReservationSpectacle w=new ReservationSpectacle();
+				Home ww=new Home(user);
+				ww.setVisible(false);
+				dispose();
+				w.setVisible(true);
+				
 			}
 		});
-		btnNewSpectacle.setBounds(30, 165, 89, 60);
+		btnNewSpectacle.setBounds(30, 165, 99, 60);
 		contentPane.add(btnNewSpectacle);
 		
 		JButton btnInfo = new JButton("Information");
-		btnInfo.setBounds(177, 165, 89, 60);
+		btnInfo.setBounds(177, 165, 104, 60);
 		contentPane.add(btnInfo);
 		
 		JButton btnUpdate = new JButton("Modifier");
-		btnUpdate.setBounds(30, 285, 89, 60);
+		btnUpdate.setBounds(30, 285, 99, 60);
 		contentPane.add(btnUpdate);
 		
 		JButton btnNewButton_3 = new JButton("New button");
-		btnNewButton_3.setBounds(177, 285, 89, 60);
+		btnNewButton_3.setBounds(177, 285, 104, 60);
 		contentPane.add(btnNewButton_3);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 	
 		
