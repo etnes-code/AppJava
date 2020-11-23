@@ -10,8 +10,13 @@ import javax.swing.border.EmptyBorder;
 
 import be.sente.DAO.DAO;
 import be.sente.DAO.FactoryDAO;
+import be.sente.pojo.Categorie;
 import be.sente.pojo.Configuration;
+import be.sente.pojo.Organisateur;
+import be.sente.pojo.Personne;
 import be.sente.pojo.PlanningSalle;
+import be.sente.pojo.Representation;
+import be.sente.pojo.Reservation;
 import be.sente.pojo.Spectacle;
 
 import javax.swing.JList;
@@ -51,7 +56,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ReservationSpectacle extends JFrame {
-
 	private JPanel contentPane;
 	private JTextField textFieldHDebut;
 	private JTextField textFieldHFin;
@@ -86,7 +90,7 @@ public class ReservationSpectacle extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ReservationSpectacle() {
+	public ReservationSpectacle(Organisateur user) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 720, 480);
 		contentPane = new JPanel();
@@ -104,7 +108,6 @@ public class ReservationSpectacle extends JFrame {
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		lblNewLabel_6.setBounds(52, 11, 238, 61);
 		panelDebout.add(lblNewLabel_6);
-		
 
 		tfPrixDebout = new JTextField();
 		tfPrixDebout.setBounds(181, 96, 65, 20);
@@ -292,18 +295,16 @@ public class ReservationSpectacle extends JFrame {
 		JLabel lblOuverture = new JLabel("Ouverture des portes");
 		lblOuverture.setBounds(286, 185, 134, 22);
 		contentPane.add(lblOuverture);
-		
+
 		JLabel lblPrix = new JLabel("");
 		lblPrix.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPrix.setForeground(Color.RED);
 		lblPrix.setFont(new Font("Tempus Sans ITC", Font.PLAIN, 22));
 		lblPrix.setBounds(20, 279, 165, 47);
-		contentPane.add(lblPrix);		
+		contentPane.add(lblPrix);
 		JDateChooser dateChooser = new JDateChooser();
 		dateChooser.setBounds(433, 68, 125, 20);
 		contentPane.add(dateChooser);
-		
-
 
 		textFieldHDebut = new JTextField();
 		textFieldHDebut.setBounds(433, 106, 107, 20);
@@ -341,25 +342,55 @@ public class ReservationSpectacle extends JFrame {
 		lblNewLabel.setBounds(20, 254, 96, 14);
 		contentPane.add(lblNewLabel);
 
-		
-
-		JButton btnNewButton = new JButton("Valider la r\u00E9servation"); //creation d'une réservation 
+		JButton btnNewButton = new JButton("Valider la r\u00E9servation"); // creation d'une réservation
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {	
-				Spectacle spectacle=new Spectacle(textFieldTitre.getText(),textFieldArtiste.getText(),(Integer)spinnerMaxPlace.getValue());
+			public void actionPerformed(ActionEvent e) {
+				Spectacle spectacle = new Spectacle(textFieldTitre.getText(), textFieldArtiste.getText(),
+						(Integer) spinnerMaxPlace.getValue());
 				spectacle.CreateSpetacle();
-				
-				Configuration config= new Configuration(comboBoxConfig.getSelectedItem().toString(),comboBoxConfig.getSelectedItem().toString());
-				config.CreateConfig();
-				if(comboBoxConfig.getSelectedItem().toString().equals("Assis version cirque")) {
-					System.out.println("cirque");
-				}else if(comboBoxConfig.getSelectedItem().toString().equals("Debout")){
-					System.out.println("debout");
+				Representation rep = new Representation(textFieldHDebut.getText(), textFieldHFin.getText(),
+						textFieldOuverture.getText());
+				rep.createRepresentation();
+				Calendar d = Calendar.getInstance();
+				d.setTime(dateChooser.getDate());
+				int prix=0;
+				if (d.get(Calendar.DAY_OF_WEEK) - 1 == 5 || d.get(Calendar.DAY_OF_WEEK) - 1 == 6
+						|| d.get(Calendar.DAY_OF_WEEK) == 1) {
+					prix = 4500;	
 				}else {
-					System.out.println("concert");		
+					prix=3000;
 				}
+				String strDate1 = recupDateToString(d);
+				d.add(Calendar.DATE, 1);
+				String strDate2 = recupDateToString(d);
+				PlanningSalle ps = new PlanningSalle(strDate1, strDate2);
+				ps.createPlanning();
+				Reservation reservation=new Reservation(prix,"Non payé",user.getId());
+				user.setReservation(reservation);
+				user.createReservation();
 				
-				
+				Configuration config = new Configuration(comboBoxConfig.getSelectedItem().toString(),
+						comboBoxConfig.getSelectedItem().toString());
+				config.CreateConfig();
+				if (comboBoxConfig.getSelectedItem().toString().equals("Assis version cirque")) {
+					Categorie catd = new Categorie("Diamant", Integer.parseInt(tfdiaPrixCir.getText()), 1000);
+					catd.createCat();
+					Categorie cato = new Categorie("Or", Integer.parseInt(tfOrPrixCir.getText()), 2000);
+					cato.createCat();
+					Categorie cata = new Categorie("Argent", Integer.parseInt(tfArgPrixCir.getText()), 1500);
+					cata.createCat();
+					Categorie catb = new Categorie("Bronze", Integer.parseInt(tfBronPrixCir.getText()), 1500);
+					catb.createCat();
+				} else if (comboBoxConfig.getSelectedItem().toString().equals("Debout")) {
+					Categorie cat = new Categorie("Place non numeroté", Integer.parseInt(tfPrixDebout.getText()), 8000);
+				} else {
+					Categorie catd = new Categorie("Diamant", Integer.parseInt(tfOrPrixCo.getText()), 500);
+					catd.createCat();
+					Categorie cata = new Categorie("Argent", Integer.parseInt(tfArgPrixCo.getText()), 1500);
+					cata.createCat();
+					Categorie catb = new Categorie("Bronze", Integer.parseInt(tfBronPrixCo.getText()), 3000);
+					catb.createCat();
+				}
 			}
 		});
 		btnNewButton.setBounds(40, 384, 165, 23);
@@ -368,32 +399,30 @@ public class ReservationSpectacle extends JFrame {
 		JButton btnCalculer = new JButton("Calculer");
 		btnCalculer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(dateChooser.getDate()==null) {
+				if (dateChooser.getDate() == null) {
 					lblPrix.setFont(new Font("Tempus Sans ITC", Font.PLAIN, 12));
-					lblPrix.setText("Veuillez choisir une date");					
-				}else {
+					lblPrix.setText("Veuillez choisir une date");
+				} else {
 					Calendar cal = Calendar.getInstance();
 					cal.setTime(dateChooser.getDate());
-					
+
 					if (cal.get(Calendar.DAY_OF_WEEK) - 1 == 5 || cal.get(Calendar.DAY_OF_WEEK) - 1 == 6
 							|| cal.get(Calendar.DAY_OF_WEEK) == 1) {
-							lblPrix.setFont(new Font("Tempus Sans ITC", Font.PLAIN, 22));
-							lblPrix.setText("4500 euros");							
-					}else {
+						lblPrix.setFont(new Font("Tempus Sans ITC", Font.PLAIN, 22));
+						lblPrix.setText("4500 euros");
+					} else {
 						lblPrix.setText("3000 euros");
 					}
 				}
-				// String strDate=recupDateToString(cal.getTime());
-				// JOptionPane.showMessageDialog(null,strDate);
 			}
 		});
 		btnCalculer.setBounds(126, 252, 89, 23);
 		contentPane.add(btnCalculer);
-
 	}
-	public static String recupDateToString(Date date) {
+
+	public static String recupDateToString(Calendar d) {
 		DateFormat dateFormat = new SimpleDateFormat("EEEEEEE dd-MM-yyyy");
-		String strDate = dateFormat.format(date);
+		String strDate = dateFormat.format(d.getTime());
 		return strDate;
 	}
 }

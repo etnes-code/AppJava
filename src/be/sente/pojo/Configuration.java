@@ -30,7 +30,7 @@ public class Configuration implements Serializable {
 	
 	public void CreateConfig() {
 		FactoryDAO adf=new FactoryDAO();
-		DAO<Configuration> configdao=adf.getConfiguration();
+		DAO<Configuration> configdao=adf.getConfigurationDAO();
 		configdao.create(this);
 		
 	}

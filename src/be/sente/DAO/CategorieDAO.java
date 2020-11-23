@@ -15,7 +15,7 @@ public class CategorieDAO extends DAO<Categorie> {
 			int max_id;
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT max(IdConfifuration)max_id FROM Configuration ");
+					.executeQuery("SELECT max(IdConfiguration)max_id FROM Configuration ");
 			if(result.first()) {
 				max_id=result.getInt("max_id");			
 			}
@@ -23,7 +23,7 @@ public class CategorieDAO extends DAO<Categorie> {
 				return false;
 			}				
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeUpdate("INSERT INTO Categorie(Type,Prix,NbrPlaceMax,IdConfifuration)VALUES('"
+					.executeUpdate("INSERT INTO Categorie(Type,Prix,NbrPlaceMax,IdConfiguration)VALUES('"
 							+ obj.getType() + "'," + obj.getPrix() + "," + obj.getNbrPlaceMax() + ","+max_id+")");
 			return true;
 		} catch (SQLException e) {

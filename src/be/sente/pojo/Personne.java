@@ -2,8 +2,13 @@ package be.sente.pojo;
 
 import java.io.Serializable;
 
+import be.sente.DAO.DAO;
+import be.sente.DAO.FactoryDAO;
+
 public class Personne implements Serializable {
 	private static final long serialVersionUID = -7002606308230390313L;
+	
+	protected int id;
 	protected String nom;
 	protected String prenom;
 	protected String rue;
@@ -22,6 +27,27 @@ public class Personne implements Serializable {
 		this.ville=ville;
 		this.email = email;
 		this.password = password;
+	}
+	
+	public Personne(int id, String nom, String prenom, String rue, int numRue, int cp, String ville, String email,
+			String password) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.rue = rue;
+		this.numRue = numRue;
+		this.cp = cp;
+		this.ville = ville;
+		this.email = email;
+		this.password = password;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getNom() {
 		return nom;
@@ -71,6 +97,16 @@ public class Personne implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}	
+	public  Personne getUser(int id) {
+		Personne p=new Personne();
+		FactoryDAO adf=new FactoryDAO();
+		DAO<Personne> personnedao=adf.getPersonneDAO();
+		p=personnedao.find(id);
+		return p;
+	}
+	public void addToList(Object obj) {}
+	
+	
 	
 
 }

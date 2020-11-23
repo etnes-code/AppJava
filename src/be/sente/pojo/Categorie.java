@@ -2,6 +2,9 @@ package be.sente.pojo;
 
 import java.io.Serializable;
 
+import be.sente.DAO.DAO;
+import be.sente.DAO.FactoryDAO;
+
 public class Categorie implements Serializable {
 	
 	private static final long serialVersionUID = -7636352819892642626L;
@@ -31,6 +34,11 @@ public class Categorie implements Serializable {
 	}
 	public void setNbrPlaceMax(int nbrPlaceMax) {
 		this.nbrPlaceMax = nbrPlaceMax;
+	}
+	public void createCat() {
+		FactoryDAO adf=new FactoryDAO();
+		DAO<Categorie> categoriedao=adf.getCategorieDAO();
+		categoriedao.create(this);
 	}
 		
 

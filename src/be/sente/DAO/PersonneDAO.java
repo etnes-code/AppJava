@@ -5,6 +5,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import be.sente.ecole.Classe;
+import be.sente.ecole.EleveDAO;
+import be.sente.ecole.ProfesseurDAO;
 import be.sente.pojo.Artistes;
 import be.sente.pojo.Client;
 import be.sente.pojo.Organisateur;
@@ -38,27 +41,29 @@ public class PersonneDAO extends DAO<Personne> {
 	public boolean update(Personne obj) {
 		return false;
 	}
-	public Personne findUser(String mail,String pwd) {
-		Personne user=new Personne();
+
+	public Personne findUser(String mail, String pwd) {
+		Personne user = new Personne();
 		try {
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
 					.executeQuery("SELECT * FROM User WHERE Email LIKE '" + mail + "' AND Password LIKE '" + pwd + "'");
-				if (result.first()) {
-					String disc = result.getString("Discriminator");
-					switch (disc) {
-					case "Client":
-						user = new Client(result.getString("Nom"), result.getString("Prenom"), result.getString("Rue"),
-								result.getInt("Numero"), result.getInt("CodePostal"), result.getString("Ville"),
-								result.getString("Email"), result.getString("Password"));
-						break;
-					case "Organisateur":
-						user = new Organisateur(result.getString("Nom"), result.getString("Prenom"),
-								result.getString("Rue"), result.getInt("Numero"), result.getInt("CodePostal"),
-								result.getString("Ville"), result.getString("Email"), result.getString("Password"));
-						break;
-					}
-				}	
+			if (result.first()) {
+				String disc = result.getString("Discriminator");
+				switch (disc) {
+				case "Client":
+					user = new Client(result.getInt("IdUser"), result.getString("Nom"), result.getString("Prenom"),
+							result.getString("Rue"), result.getInt("Numero"), result.getInt("CodePostal"),
+							result.getString("Ville"), result.getString("Email"), result.getString("Password"));
+					break;
+				case "Organisateur":
+					user = new Organisateur(result.getInt("IdUser"), result.getString("Nom"),
+							result.getString("Prenom"), result.getString("Rue"), result.getInt("Numero"),
+							result.getInt("CodePostal"), result.getString("Ville"), result.getString("Email"),
+							result.getString("Password"));
+					break;
+				}
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -66,10 +71,34 @@ public class PersonneDAO extends DAO<Personne> {
 		return user;
 
 	}
+
 	public Personne find(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Personne p = new Personne();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM User WHERE IdUser = " + id);
+			if (result.first()) {
+				String disc = result.getString("Discriminator");
+				switch (disc) {
+				case "Client":
+					p = new Client(result.getInt("IdUser"), result.getString("Nom"), result.getString("Prenom"),
+							result.getString("Rue"), result.getInt("Numero"), result.getInt("CodePostal"),
+							result.getString("Ville"), result.getString("Email"), result.getString("Password"));
+					break;
+				case "Organisateur":
+					p = new Organisateur(result.getInt("IdUser"), result.getString("Nom"), result.getString("Prenom"),
+							result.getString("Rue"), result.getInt("Numero"), result.getInt("CodePostal"),
+							result.getString("Ville"), result.getString("Email"), result.getString("Password"));
+					break;
+				}
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return p;
 	}
 
-	
 }

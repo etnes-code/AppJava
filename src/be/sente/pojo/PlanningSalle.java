@@ -6,6 +6,9 @@ import java.time.LocalDate;
 
 import javax.swing.DefaultListModel;
 
+import be.sente.DAO.DAO;
+import be.sente.DAO.FactoryDAO;
+
 public class PlanningSalle implements Serializable {
 	
 	private static final long serialVersionUID = -5918981801466838303L;
@@ -27,6 +30,11 @@ public class PlanningSalle implements Serializable {
 	}
 	public void setDateFinR(String dateFinR) {
 		this.dateFinR = dateFinR;
+	}
+	public void createPlanning() {
+		FactoryDAO adf=new FactoryDAO();
+		DAO<PlanningSalle> planningdao=adf.getPlanningSalleDAO();
+		planningdao.create(this);
 	}
 	
 	

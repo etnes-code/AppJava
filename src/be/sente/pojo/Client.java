@@ -10,4 +10,10 @@ public class Client extends Personne implements Serializable {
 			String password) {
 		super(nom, prenom, rue, numRue, cp, ville, email, password);
 	}
+
+	public Client(int id, String nom, String prenom, String rue, int numRue, int cp, String ville, String email,
+			String password) {
+		super(id, nom, prenom, rue, numRue, cp, ville, email, password);
+	}
+	
 }
