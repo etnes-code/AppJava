@@ -11,12 +11,23 @@ public class Categorie implements Serializable {
 	private String type;
 	private float prix;
 	private int nbrPlaceMax;
-	public Categorie(String type, float prix, int nbrPlaceMax) {
+	private int nbrPlaceRestante;
+	public Categorie(String type, float prix, int nbrPlaceMax,int nbrPlaceRestante) {
 		super();
 		this.type = type;
 		this.prix = prix;
 		this.nbrPlaceMax = nbrPlaceMax;
+		this.nbrPlaceRestante= nbrPlaceRestante;
 	}
+	
+	public int getNbrPlaceRestante() {
+		return nbrPlaceRestante;
+	}
+
+	public void setNbrPlaceRestante(int nbrPlaceRestante) {
+		this.nbrPlaceRestante = nbrPlaceRestante;
+	}
+
 	public String getType() {
 		return type;
 	}

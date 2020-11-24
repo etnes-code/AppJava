@@ -12,12 +12,38 @@ import be.sente.DAO.FactoryDAO;
 public class PlanningSalle implements Serializable {
 	
 	private static final long serialVersionUID = -5918981801466838303L;
-	String dateDebutR;
-	String dateFinR;
+	
+	private int id;
+	private String dateDebutR;
+	private String dateFinR;
+	private int idSpectacle;
+	
+	public PlanningSalle() {}
 	public PlanningSalle(String dateDebutR, String dateFinR) {
 		super();
 		this.dateDebutR = dateDebutR;
 		this.dateFinR = dateFinR;
+	}
+	
+	public PlanningSalle(int id, String dateDebutR, String dateFinR, int idSpectacle) {
+		super();
+		this.id = id;
+		this.dateDebutR = dateDebutR;
+		this.dateFinR = dateFinR;
+		this.idSpectacle = idSpectacle;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getIdSpectacle() {
+		return idSpectacle;
+	}
+	public void setIdSpectacle(int idSpectacle) {
+		this.idSpectacle = idSpectacle;
 	}
 	public String getDateDebutR() {
 		return dateDebutR;

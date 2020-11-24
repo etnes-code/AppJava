@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import be.sente.pojo.PlanningSalle;
 import be.sente.pojo.Spectacle;
 
 public class SpectacleDAO extends DAO<Spectacle> {
@@ -32,7 +33,17 @@ public class SpectacleDAO extends DAO<Spectacle> {
 	}
 
 	public Spectacle find(int id) {
-		return null;
+		Spectacle spectacle = new Spectacle();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Spectacle WHERE IdSpectacle = " + id);
+			if (result.first())
+				spectacle = new Spectacle(result.getInt("IdSpectacle"),result.getString("Titre"),result.getString("Artiste"),result.getInt("NbrPlaceMaxParClient"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return spectacle;
 	}
 
 	public Spectacle findUser(String mail, String pwd) {

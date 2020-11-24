@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import be.sente.pojo.PlanningSalle;
+import be.sente.pojo.Reservation;
 
 public class PlanningSalleDAO extends DAO<PlanningSalle> {
 
@@ -15,6 +16,7 @@ public class PlanningSalleDAO extends DAO<PlanningSalle> {
 	public boolean create(PlanningSalle obj) {
 		try {
 			int max_id;
+			int max_id2;
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
 					.executeQuery("SELECT max(IdSpectacle)max_id FROM Spectacle ");
@@ -23,9 +25,17 @@ public class PlanningSalleDAO extends DAO<PlanningSalle> {
 			} else {
 				return false;
 			}
+			 result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT max(IdReservation)max_id FROM Reservation ");
+			if (result.first()) {
+				max_id2 = result.getInt("max_id");
+			} else {
+				return false;
+			}		
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeUpdate("INSERT INTO PlanningSalle(DateDebut,DateFin,IdUser,IdSpectacle) VALUES ('"
-							+ obj.getDateDebutR() + "','" + obj.getDateFinR() + "',1," + max_id + ")");
+					.executeUpdate("INSERT INTO PlanningSalle(DateDebut,DateFin,IdUser,IdSpectacle,IdReservation) VALUES ('"
+							+ obj.getDateDebutR() + "','" + obj.getDateFinR() + "',1," + max_id + ","+max_id2+")");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -44,7 +54,18 @@ public class PlanningSalleDAO extends DAO<PlanningSalle> {
 	}
 
 	public PlanningSalle find(int id) {
-		return null;
+		PlanningSalle planning = new PlanningSalle();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM PlanningSalle WHERE IdPlanningSalle = " + id);
+			if (result.first())
+				planning = new PlanningSalle(result.getInt("IdPlanningSalle"), result.getString("DateDebut"),
+						result.getString("DateFin"), result.getInt("IdSpectacle"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return planning;
 
 	}
 

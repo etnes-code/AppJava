@@ -8,14 +8,13 @@ import be.sente.DAO.FactoryDAO;
 
 public class Spectacle  implements  Serializable{
 	private static final long serialVersionUID = 4019725788932367988L;
-	
+	private int id;
 	private String Titre;
 	private String Artiste;
 	private int nbrPlaceParClient;
 	private Configuration config;
 	private ArrayList<Representation> listRepresentation;
-	
-	
+	public Spectacle() {}
 	public Spectacle(String titre, String artiste, int nbrPlaceParClient) {
 		super();
 		Titre = titre;
@@ -23,6 +22,20 @@ public class Spectacle  implements  Serializable{
 		this.nbrPlaceParClient = nbrPlaceParClient;
 	}
 	
+	public Spectacle(int id, String titre, String artiste, int nbrPlaceParClient) {
+		super();
+		this.id = id;
+		Titre = titre;
+		Artiste = artiste;
+		this.nbrPlaceParClient = nbrPlaceParClient;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getTitre() {
 		return Titre;
 	}
@@ -63,7 +76,6 @@ public class Spectacle  implements  Serializable{
 		DAO<Spectacle> spectacledao=adf.getSpectacleDAO();
 		spectacledao.create(this);
 	}
-
 	//créer une methode pour ajouter à la listedes répresentation
 	public void addToList(Representation rep) {
 		listRepresentation.add(rep);

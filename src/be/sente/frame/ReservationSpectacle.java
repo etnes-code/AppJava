@@ -345,12 +345,16 @@ public class ReservationSpectacle extends JFrame {
 		JButton btnNewButton = new JButton("Valider la r\u00E9servation"); // creation d'une réservation
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//spectacle
 				Spectacle spectacle = new Spectacle(textFieldTitre.getText(), textFieldArtiste.getText(),
 						(Integer) spinnerMaxPlace.getValue());
 				spectacle.CreateSpetacle();
+				//representation
 				Representation rep = new Representation(textFieldHDebut.getText(), textFieldHFin.getText(),
 						textFieldOuverture.getText());
 				rep.createRepresentation();
+				
+				
 				Calendar d = Calendar.getInstance();
 				d.setTime(dateChooser.getDate());
 				int prix=0;
@@ -360,37 +364,42 @@ public class ReservationSpectacle extends JFrame {
 				}else {
 					prix=3000;
 				}
+				//reservation
+				Reservation reservation=new Reservation(prix,"Non payé",user.getId());
+				user.setReservation(reservation);
+				user.createReservation();
+				//planning salle
 				String strDate1 = recupDateToString(d);
 				d.add(Calendar.DATE, 1);
 				String strDate2 = recupDateToString(d);
 				PlanningSalle ps = new PlanningSalle(strDate1, strDate2);
 				ps.createPlanning();
-				Reservation reservation=new Reservation(prix,"Non payé",user.getId());
-				user.setReservation(reservation);
-				user.createReservation();
-				
+				//configuration
 				Configuration config = new Configuration(comboBoxConfig.getSelectedItem().toString(),
 						comboBoxConfig.getSelectedItem().toString());
 				config.CreateConfig();
+				//categorie
 				if (comboBoxConfig.getSelectedItem().toString().equals("Assis version cirque")) {
-					Categorie catd = new Categorie("Diamant", Integer.parseInt(tfdiaPrixCir.getText()), 1000);
+					Categorie catd = new Categorie("Diamant", Integer.parseInt(tfdiaPrixCir.getText()), 1000,1000);
 					catd.createCat();
-					Categorie cato = new Categorie("Or", Integer.parseInt(tfOrPrixCir.getText()), 2000);
+					Categorie cato = new Categorie("Or", Integer.parseInt(tfOrPrixCir.getText()), 2000,2000);
 					cato.createCat();
-					Categorie cata = new Categorie("Argent", Integer.parseInt(tfArgPrixCir.getText()), 1500);
+					Categorie cata = new Categorie("Argent", Integer.parseInt(tfArgPrixCir.getText()), 1500,1500);
 					cata.createCat();
-					Categorie catb = new Categorie("Bronze", Integer.parseInt(tfBronPrixCir.getText()), 1500);
+					Categorie catb = new Categorie("Bronze", Integer.parseInt(tfBronPrixCir.getText()), 1500,1500);
 					catb.createCat();
 				} else if (comboBoxConfig.getSelectedItem().toString().equals("Debout")) {
-					Categorie cat = new Categorie("Place non numeroté", Integer.parseInt(tfPrixDebout.getText()), 8000);
+					Categorie cat = new Categorie("Place non numeroté", Integer.parseInt(tfPrixDebout.getText()), 8000,8000);
+					cat.createCat();
 				} else {
-					Categorie catd = new Categorie("Diamant", Integer.parseInt(tfOrPrixCo.getText()), 500);
+					Categorie catd = new Categorie("Diamant", Integer.parseInt(tfOrPrixCo.getText()), 500,500);
 					catd.createCat();
-					Categorie cata = new Categorie("Argent", Integer.parseInt(tfArgPrixCo.getText()), 1500);
+					Categorie cata = new Categorie("Argent", Integer.parseInt(tfArgPrixCo.getText()), 1500,1500);
 					cata.createCat();
-					Categorie catb = new Categorie("Bronze", Integer.parseInt(tfBronPrixCo.getText()), 3000);
+					Categorie catb = new Categorie("Bronze", Integer.parseInt(tfBronPrixCo.getText()), 3000,3000);
 					catb.createCat();
 				}
+				JOptionPane.showMessageDialog(null, "Données enregistré");
 			}
 		});
 		btnNewButton.setBounds(40, 384, 165, 23);

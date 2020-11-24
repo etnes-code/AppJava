@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import be.sente.ecole.Eleve;
 import be.sente.pojo.Categorie;
 import be.sente.pojo.Organisateur;
 import be.sente.pojo.Reservation;
@@ -16,19 +17,10 @@ public class ReservationDAO extends DAO<Reservation> {
 
 	public boolean create(Reservation obj) {
 		try {
-			int max_id;
-			ResultSet result = this.connect
-					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT max(IdPlanningSalle)max_id FROM PlanningSalle");
-			if (result.first()) {
-				max_id = result.getInt("max_id");
-			} else {
-				return false;
-			}
+			
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeUpdate("INSERT INTO Reservation(Solde,Statut,IdPlanningSalle,IdUser) VALUES("
-							+ obj.getSolde() + ",'" + obj.getStatut() + "'," + max_id
-							+ "," + obj.getIdUser() + ")");
+					.executeUpdate("INSERT INTO Reservation(Solde,Statut,IdUser) VALUES("
+							+ obj.getSolde() + ",'" + obj.getStatut() + "'," + obj.getIdUser() + ")");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -45,7 +37,18 @@ public class ReservationDAO extends DAO<Reservation> {
 	}
 
 	public Reservation find(int id) {
-		return null;
+		Reservation reservation = new Reservation();
+		try{
+			ResultSet result = this.connect.createStatement(
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+	ResultSet.CONCUR_READ_ONLY).executeQuery("SELECT * FROM Reservation WHERE IdUser = " + id);
+			if(result.first())
+				reservation = new Reservation(result.getInt("IdReservation"), result.getInt("Solde"), result.getString("Statut"),result.getInt("IdPlanningSalle"));
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return reservation;
 	}
 
 	public Reservation findUser(String mail, String pwd) {
