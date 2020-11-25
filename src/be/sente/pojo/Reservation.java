@@ -16,7 +16,7 @@ public class Reservation implements Serializable {
 	private String statut;
 	private int idUser;
 	private int idPlanning;
-	private Set<PlanningSalle> listPlanning = new HashSet();
+	private PlanningSalle planning;
 
 	public Reservation() {
 	}
@@ -28,12 +28,11 @@ public class Reservation implements Serializable {
 		this.idUser = idUser;
 	}
 
-	public Reservation(int id, float solde, String statut, int idPlanning) {
+	public Reservation(int id, float solde, String statut) {
 		super();
 		this.id = id;
 		this.solde = solde;
 		this.statut = statut;
-		this.idPlanning = idPlanning;
 	}
 
 	public float getSolde() {
@@ -76,10 +75,12 @@ public class Reservation implements Serializable {
 		this.idPlanning = idPlanning;
 	}
 
-	public void addPlanningToList(PlanningSalle planning) {
-		if (!listPlanning.contains(planning)) {
-			this.listPlanning.add(planning);
-		}
+	public PlanningSalle getPlanning() {
+		return planning;
+	}
+
+	public void setPlanning(PlanningSalle planning) {
+		this.planning = planning;
 	}
 
 }

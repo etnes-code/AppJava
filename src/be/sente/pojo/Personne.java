@@ -105,8 +105,6 @@ public class Personne implements Serializable {
 		return p;
 	}
 	public void addToList(Object obj) {}
-	
-	
-	
+	public void displayList() {}	
 
 }

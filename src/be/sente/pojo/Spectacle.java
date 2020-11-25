@@ -76,6 +76,7 @@ public class Spectacle  implements  Serializable{
 		DAO<Spectacle> spectacledao=adf.getSpectacleDAO();
 		spectacledao.create(this);
 	}
+	
 	//créer une methode pour ajouter à la listedes répresentation
 	public void addToList(Representation rep) {
 		listRepresentation.add(rep);

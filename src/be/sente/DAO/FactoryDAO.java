@@ -13,7 +13,6 @@ import be.sente.pojo.Spectacle;
 public class FactoryDAO  extends AbstractDAOFactory{
 	protected static final Connection conn = BosquetConnection.getInstance();
 
-	@Override
 	public DAO<Personne> getPersonneDAO() {
 		// TODO Auto-generated method stub
 		return new PersonneDAO(conn);

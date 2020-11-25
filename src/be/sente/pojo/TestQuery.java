@@ -18,7 +18,8 @@ public class TestQuery {
 		DAO<PlanningSalle> planningdao=adf.getPlanningSalleDAO();
 		user.getReservation().addPlanningToList(planningdao.find(user.getReservation().getIdPlanning()));
 		*/
-		
+		Spectacle spec = new Spectacle();
+		System.out.println(spec.IsEmpty());
 		
 
 		

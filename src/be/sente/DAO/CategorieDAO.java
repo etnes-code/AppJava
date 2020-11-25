@@ -23,7 +23,7 @@ public class CategorieDAO extends DAO<Categorie> {
 				return false;
 			}
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeUpdate(
-					"INSERT INTO Categorie(Type,Prix,NbrPlaceMax,,NbrPlaceRestante,IdConfiguration)VALUES('"
+					"INSERT INTO Categorie(Type,Prix,NbrPlaceMax,NbrPlaceRestante,IdConfiguration)VALUES('"
 							+ obj.getType() + "'," + obj.getPrix() + "," + obj.getNbrPlaceMax() + ","
 							+ obj.getNbrPlaceRestante() + "," + max_id + ")");
 			return true;

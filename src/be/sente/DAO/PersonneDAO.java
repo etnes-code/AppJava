@@ -12,6 +12,7 @@ import be.sente.pojo.Artistes;
 import be.sente.pojo.Client;
 import be.sente.pojo.Organisateur;
 import be.sente.pojo.Personne;
+import be.sente.pojo.Reservation;
 
 public class PersonneDAO extends DAO<Personne> {
 
@@ -90,6 +91,14 @@ public class PersonneDAO extends DAO<Personne> {
 					p = new Organisateur(result.getInt("IdUser"), result.getString("Nom"), result.getString("Prenom"),
 							result.getString("Rue"), result.getInt("Numero"), result.getInt("CodePostal"),
 							result.getString("Ville"), result.getString("Email"), result.getString("Password"));
+							FactoryDAO adf=new FactoryDAO();
+							DAO<Reservation> reservationdao=adf.getReservationDAO();
+					 		result = this.connect
+							.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+							.executeQuery("SELECT IdReservation FROM Reservation WHERE IdUser = " + p.getId());
+					 		while(result.next()) {
+					 			p.addToList(reservationdao.find(result.getInt("IdReservation")));
+					 		}
 					break;
 				}
 

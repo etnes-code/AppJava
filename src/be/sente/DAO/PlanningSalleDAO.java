@@ -62,6 +62,8 @@ public class PlanningSalleDAO extends DAO<PlanningSalle> {
 			if (result.first())
 				planning = new PlanningSalle(result.getInt("IdPlanningSalle"), result.getString("DateDebut"),
 						result.getString("DateFin"), result.getInt("IdSpectacle"));
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
