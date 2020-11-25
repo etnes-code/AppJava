@@ -3,8 +3,11 @@ package be.sente.DAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Set;
 
+import be.sente.pojo.Categorie;
 import be.sente.pojo.Configuration;
+import be.sente.pojo.Spectacle;
 
 public class ConfigurationDAO extends DAO<Configuration> {
 	
@@ -41,10 +44,30 @@ public class ConfigurationDAO extends DAO<Configuration> {
 	}
 	
 	public Configuration find(int id) {
-		return null;
+		Configuration config = new Configuration();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Configuration WHERE IdSpectacle = " + id);
+			if (result.first())
+				config = new Configuration(result.getInt("IdConfiguration"),result.getString("Type"),result.getString("Description"));
+			result=this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT IdCategorie FROM Categorie WHERE IdConfiguration = " + result.getInt("IdConfiguration"));
+			FactoryDAO adf=new FactoryDAO();
+			DAO<Categorie> categoriedao=adf.getCategorieDAO();
+			while(result.next())
+				config.addToListCat(categoriedao.find(result.getInt("IdConfiguration")));
+	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return config;
 	}
+	
 	public  Configuration findUser(String mail, String pwd) {
 		return null;
 	}
+	
 
 }

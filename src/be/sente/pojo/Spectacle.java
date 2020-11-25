@@ -12,7 +12,7 @@ public class Spectacle  implements  Serializable{
 	private String Titre;
 	private String Artiste;
 	private int nbrPlaceParClient;
-	private Configuration config;
+	private Configuration config=new Configuration();
 	private ArrayList<Representation> listRepresentation;
 	public Spectacle() {}
 	public Spectacle(String titre, String artiste, int nbrPlaceParClient) {
@@ -69,14 +69,30 @@ public class Spectacle  implements  Serializable{
 	public void setNbrPlaceParClient(int nbrPlaceParClient) {
 		this.nbrPlaceParClient = nbrPlaceParClient;
 	}
+	
 
 
+	public Configuration getConfig() {
+		return config;
+	}
+	public void setConfig(Configuration config) {
+		this.config = config;
+	}
 	public void CreateSpetacle() {
 		FactoryDAO adf=new FactoryDAO();
 		DAO<Spectacle> spectacledao=adf.getSpectacleDAO();
 		spectacledao.create(this);
 	}
+	public Spectacle findSpectacle(int id) {
+		FactoryDAO adf=new FactoryDAO();
+		DAO<Spectacle> spectacledao=adf.getSpectacleDAO();
+		return spectacledao.find(id);		
+	}
 	
+	@Override
+	public String toString() {
+		return this.Titre;
+	}
 	//créer une methode pour ajouter à la listedes répresentation
 	public void addToList(Representation rep) {
 		listRepresentation.add(rep);

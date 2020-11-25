@@ -47,12 +47,4 @@ public class Organisateur extends Personne implements Serializable {
 	public void addToList(Object obj) {
 		listReservation.add((Reservation) obj);
 	}
-	@Override
-	public void displayList() {
-		for(var item : listReservation) {
-			System.out.println(item);		
-		}
-		
-	}
-	
 }

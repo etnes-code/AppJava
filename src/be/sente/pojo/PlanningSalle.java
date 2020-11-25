@@ -17,7 +17,7 @@ public class PlanningSalle implements Serializable {
 	private String dateDebutR;
 	private String dateFinR;
 	private int idSpectacle;
-	private Spectacle spectacle;
+	private Spectacle spectacle=new Spectacle();
 	
 	public PlanningSalle() {}
 	public PlanningSalle(String dateDebutR, String dateFinR) {
@@ -69,7 +69,5 @@ public class PlanningSalle implements Serializable {
 		FactoryDAO adf=new FactoryDAO();
 		DAO<PlanningSalle> planningdao=adf.getPlanningSalleDAO();
 		planningdao.create(this);
-	}
-	
-	
+	}	
 }

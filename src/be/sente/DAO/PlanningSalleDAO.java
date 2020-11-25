@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import be.sente.pojo.PlanningSalle;
 import be.sente.pojo.Reservation;
+import be.sente.pojo.Spectacle;
 
 public class PlanningSalleDAO extends DAO<PlanningSalle> {
 
@@ -61,9 +62,9 @@ public class PlanningSalleDAO extends DAO<PlanningSalle> {
 					.executeQuery("SELECT * FROM PlanningSalle WHERE IdPlanningSalle = " + id);
 			if (result.first())
 				planning = new PlanningSalle(result.getInt("IdPlanningSalle"), result.getString("DateDebut"),
-						result.getString("DateFin"), result.getInt("IdSpectacle"));
-			
-			
+						result.getString("DateFin"), result.getInt("IdSpectacle"));						
+			planning.setSpectacle(planning.getSpectacle().findSpectacle(result.getInt("IdSpectacle")));
+					
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

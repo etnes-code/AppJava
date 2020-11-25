@@ -16,7 +16,7 @@ public class Reservation implements Serializable {
 	private String statut;
 	private int idUser;
 	private int idPlanning;
-	private PlanningSalle planning;
+	private PlanningSalle planning= new PlanningSalle();
 
 	public Reservation() {
 	}

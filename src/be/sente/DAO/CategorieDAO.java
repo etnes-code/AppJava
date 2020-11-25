@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import be.sente.pojo.Categorie;
+import be.sente.pojo.Configuration;
 
 public class CategorieDAO extends DAO<Categorie> {
 	public CategorieDAO(Connection conn) {
@@ -42,7 +43,17 @@ public class CategorieDAO extends DAO<Categorie> {
 	}
 
 	public Categorie find(int id) {
-		return null;
+		Categorie cat = new Categorie();
+		try {
+			ResultSet result = this.connect
+					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeQuery("SELECT * FROM Catetorie WHERE IdConfiguration = " + id);
+			if (result.first())
+				cat = new Categorie(result.getInt("IdCategorie"),result.getString("Type"),result.getInt("Prix"),result.getInt("NbrPlaceMax"),result.getInt("NbrPlaceRestante"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cat;
 	}
 
 	public Categorie findUser(String mail, String pwd) {
