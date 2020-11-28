@@ -30,11 +30,27 @@ public class ReservationDAO extends DAO<Reservation> {
 	}
 
 	public boolean delete(Reservation obj) {
-		return false;
+		try {
+			
+			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+			.executeUpdate("DELETE FROM Reservation WHERE IdReservation = "+obj.getId());
+			return true;
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public boolean update(Reservation obj) {
-		return false;
+		try {
+			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+			.executeUpdate("UPDATE FROM Reservation SET Solde = "+obj.getSolde()+", Statut = '"+obj.getStatut()+"' WHERE IdReservation = "+obj.getId());	
+			return true;			
+		}catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public Reservation find(int id) {

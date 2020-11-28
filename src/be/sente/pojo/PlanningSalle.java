@@ -69,5 +69,11 @@ public class PlanningSalle implements Serializable {
 		FactoryDAO adf=new FactoryDAO();
 		DAO<PlanningSalle> planningdao=adf.getPlanningSalleDAO();
 		planningdao.create(this);
-	}	
+	}
+	public PlanningSalle getPlanning(int id) {
+		FactoryDAO adf=new FactoryDAO();
+		DAO<PlanningSalle> planningdao=adf.getPlanningSalleDAO();
+		return planningdao.find(id);
+		
+	}
 }

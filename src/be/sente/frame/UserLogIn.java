@@ -101,8 +101,7 @@ public class UserLogIn extends JFrame {
 					h.setVisible(true);
 					w.setVisible(false);
 					dispose();			
-				}
-				
+				}				
 			}
 		});
 		btnConnexion.setBounds(295, 141, 129, 23);

@@ -4,6 +4,8 @@ import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Set;
 
 import be.sente.ecole.Classe;
 import be.sente.ecole.EleveDAO;
@@ -40,7 +42,17 @@ public class PersonneDAO extends DAO<Personne> {
 	}
 
 	public boolean update(Personne obj) {
-		return false;
+		try {
+			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeUpdate("UPDATE INTO User SET Nom = '" + obj.getNom() + "', Prenom = '" + obj.getPrenom()
+							+ "', Rue = '" + obj.getRue() + "', Numero = " + obj.getNumRue() + ",CodePostale = "
+							+ obj.getCp() + ", Ville = '" + obj.getVille() + "', Email = '" + obj.getEmail()
+							+ "', PassWord = '" + obj.getPassword() + "' WHERE IdUser = " + obj.getId());
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public Personne findUser(String mail, String pwd) {
@@ -91,14 +103,13 @@ public class PersonneDAO extends DAO<Personne> {
 					p = new Organisateur(result.getInt("IdUser"), result.getString("Nom"), result.getString("Prenom"),
 							result.getString("Rue"), result.getInt("Numero"), result.getInt("CodePostal"),
 							result.getString("Ville"), result.getString("Email"), result.getString("Password"));
-							FactoryDAO adf=new FactoryDAO();
-							DAO<Reservation> reservationdao=adf.getReservationDAO();
-					 		result = this.connect
-							.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					FactoryDAO adf = new FactoryDAO();
+					DAO<Reservation> reservationdao = adf.getReservationDAO();
+					result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
 							.executeQuery("SELECT IdReservation FROM Reservation WHERE IdUser = " + p.getId());
-					 		while(result.next()) {
-					 			p.addToList(reservationdao.find(result.getInt("IdReservation")));
-					 		}
+					while (result.next()) {
+						p.addToList(reservationdao.find(result.getInt("IdReservation")));
+					}
 					break;
 				}
 
@@ -109,5 +120,12 @@ public class PersonneDAO extends DAO<Personne> {
 		}
 		return p;
 	}
+
+	@Override
+	public ArrayList<Personne> getALL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

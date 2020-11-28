@@ -1,5 +1,7 @@
 package be.sente.DAO;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 import be.sente.pojo.Personne;
@@ -17,5 +19,5 @@ protected Connection connect = null;
 	
 	public abstract T find(int id);
 	public  abstract T findUser(String mail, String pwd);
-	//public abstract Set<T>getALL();
+	public abstract ArrayList<T>getALL();
 }
