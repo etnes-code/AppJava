@@ -67,7 +67,7 @@ public class PlanningSalleDAO extends DAO<PlanningSalle> {
 		try {
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM PlanningSalle WHERE IdPlanningSalle = " + id);
+					.executeQuery("SELECT * FROM PlanningSalle WHERE IdReservation = " + id);
 			if (result.first())
 				planning = new PlanningSalle(result.getInt("IdPlanningSalle"), result.getString("DateDebut"),
 						result.getString("DateFin"), result.getInt("IdSpectacle"));

@@ -61,6 +61,7 @@ public class RepresentationDAO extends DAO<Representation> {
 		}
 		return rep;
 	}
+	
 
 	public Representation findUser(String mail, String pwd) {
 		return null;

@@ -21,6 +21,7 @@ import org.graalvm.compiler.lir.util.ValueSet;
 import be.sente.DAO.DAO;
 import be.sente.DAO.FactoryDAO;
 import be.sente.pojo.Client;
+import be.sente.pojo.Commande;
 import be.sente.pojo.Organisateur;
 import be.sente.pojo.Personne;
 import be.sente.pojo.Spectacle;
@@ -77,15 +78,7 @@ public class Home extends JFrame {
 
 		panelClient.setVisible(false);
 
-		JButton btnBuy = new JButton("Acheter");
-		btnBuy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ReservationPlace w = new ReservationPlace();
-				w.setVisible(true);
-			}
-		});
-		btnBuy.setBounds(29, 93, 99, 60);
-		panelClient.add(btnBuy);
+		
 
 		JButton btnInformation = new JButton("Information");
 		btnInformation.setBounds(170, 93, 99, 60);
@@ -99,9 +92,10 @@ public class Home extends JFrame {
 		btnNewSpectacle_4.setBounds(170, 198, 99, 60);
 		panelClient.add(btnNewSpectacle_4);
 
-		JList listCommande = new JList();
-		listCommande.setBounds(303, 36, 291, 312);
-		panelClient.add(listCommande);
+		
+		
+		
+		
 
 		JLabel titlelistbuy = new JLabel("Liste de vos achats");
 		titlelistbuy.setBounds(303, 11, 266, 21);
@@ -149,8 +143,7 @@ public class Home extends JFrame {
 			
 			orga = (Organisateur) user;
 		}
-		
-
+		//affichage de la liste des réservation de l'organisateur
 		ArrayList<Spectacle> listSpec = new ArrayList<Spectacle>();
 		for (var item : orga.getListReservation()) {
 			listSpec.add(item.getPlanning().getSpectacle());
@@ -163,6 +156,26 @@ public class Home extends JFrame {
 			}
 
 			public Spectacle getElementAt(int index) {
+				return values.get(index);
+			}
+		});
+		
+		JList listCommande = new JList();
+		listCommande.setBounds(303, 36, 291, 312);
+		panelClient.add(listCommande);
+		
+		// affichage de la liste des commande du client
+		ArrayList<Commande>listCom= new ArrayList<Commande>();
+		for (Commande item : client.getListCommande()) {
+			listCom.add(item);
+		}
+		listCommande.setModel(new AbstractListModel() {
+			ArrayList<Commande> values = listCom;
+
+			public int getSize() {
+				return values.size();
+			}
+			public Commande getElementAt(int index) {
 				return values.get(index);
 			}
 		});
@@ -243,6 +256,16 @@ public class Home extends JFrame {
 				deco.setVisible(true);
 			}
 		});
+		JButton btnBuy = new JButton("Acheter");
+		btnBuy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReservationPlace w = new ReservationPlace(user.getId());
+				w.setVisible(true);
+				dispose();
+			}
+		});
+		btnBuy.setBounds(29, 93, 99, 60);
+		panelClient.add(btnBuy);
 
 	}
 }

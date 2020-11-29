@@ -418,9 +418,9 @@ public class ReservationSpectacle extends JFrame {
 					if (cal.get(Calendar.DAY_OF_WEEK) - 1 == 5 || cal.get(Calendar.DAY_OF_WEEK) - 1 == 6
 							|| cal.get(Calendar.DAY_OF_WEEK) == 1) {
 						lblPrix.setFont(new Font("Tempus Sans ITC", Font.PLAIN, 22));
-						lblPrix.setText("4500 euros");
+						lblPrix.setText("4500 €");
 					} else {
-						lblPrix.setText("3000 euros");
+						lblPrix.setText("3000 €");
 					}
 				}
 			}

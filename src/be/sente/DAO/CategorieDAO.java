@@ -47,7 +47,7 @@ public class CategorieDAO extends DAO<Categorie> {
 		try {
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-					.executeQuery("SELECT * FROM Catetorie WHERE IdConfiguration = " + id);
+					.executeQuery("SELECT * FROM Categorie WHERE IdConfiguration = " + id);
 			if (result.first())
 				cat = new Categorie(result.getInt("IdCategorie"),result.getString("Type"),result.getInt("Prix"),result.getInt("NbrPlaceMax"),result.getInt("NbrPlaceRestante"));
 		} catch (SQLException e) {

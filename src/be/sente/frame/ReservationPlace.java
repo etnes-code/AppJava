@@ -9,10 +9,14 @@ import javax.swing.border.EmptyBorder;
 
 import be.sente.DAO.DAO;
 import be.sente.DAO.FactoryDAO;
+import be.sente.pojo.Client;
+import be.sente.pojo.Commande;
+import be.sente.pojo.Place;
 import be.sente.pojo.PlanningSalle;
 import be.sente.pojo.Spectacle;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -25,6 +29,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerModel;
@@ -65,7 +70,7 @@ public class ReservationPlace extends JFrame {
 	 * Create the frame.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public ReservationPlace() {
+	public ReservationPlace(int idUser) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 640, 480);
 		contentPane = new JPanel();
@@ -122,8 +127,6 @@ public class ReservationPlace extends JFrame {
 		lblInfoHeureF.setBounds(132, 203, 122, 14);
 		panelInfo.add(lblInfoHeureF);
 
-		
-		
 		JLabel lblInfoDate = new JLabel("");
 		lblInfoDate.setBounds(100, 56, 196, 14);
 		panelInfo.add(lblInfoDate);
@@ -134,10 +137,10 @@ public class ReservationPlace extends JFrame {
 
 		FactoryDAO adf = new FactoryDAO();
 		DAO<Spectacle> spectacledao = adf.getSpectacleDAO();
-		DAO<PlanningSalle> planningdao=adf.getPlanningSalleDAO();
-		ArrayList<PlanningSalle> listPlanningSalle=planningdao.getALL();
+		DAO<PlanningSalle> planningdao = adf.getPlanningSalleDAO();
+		ArrayList<PlanningSalle> listPlanningSalle = planningdao.getALL();
 		ArrayList<Spectacle> listSpectacle = spectacledao.getALL();
-		
+
 		list.setModel(new AbstractListModel() {
 			ArrayList<Spectacle> values = listSpectacle;
 
@@ -160,7 +163,38 @@ public class ReservationPlace extends JFrame {
 		lblchoose.setBounds(23, 203, 237, 123);
 		contentPane.add(lblchoose);
 
-		
+		JButton btnInfo = new JButton("Information"); // voir les informations sur spectacle sélectionné
+		btnInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				specInfo = (Spectacle) list.getSelectedValue();
+				panelInfo.setVisible(true);
+				list.setVisible(false);
+				lblInfoTitre.setText(specInfo.getTitre());
+				lblInfoArtiste.setText(specInfo.getArtiste());
+				lblInfoConfig.setText(specInfo.getConfig().getType());
+				lblInfoHeureD.setText(specInfo.getRepresentation().getHeureDebut());
+				lblInfoHeureF.setText(specInfo.getRepresentation().getHeureFin());
+				for (var item : listPlanningSalle) {
+					if (item.getIdSpectacle() == specInfo.getId()) {
+						lblInfoDate.setText(item.getDateDebutR());
+					}
+				}
+
+			}
+		});
+		btnInfo.setBounds(485, 95, 108, 23);
+		contentPane.add(btnInfo);
+
+		JButton btnReturn = new JButton("retour \u00E0 la liste"); // revenir à la liste des spectacles
+		btnReturn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelInfo.setVisible(false);
+				list.setVisible(true);
+
+			}
+		});
+		btnReturn.setBounds(64, 256, 175, 23);
+		panelInfo.add(btnReturn);
 
 		JPanel panelCommande = new JPanel();
 		panelCommande.setBounds(10, 11, 288, 419);
@@ -181,24 +215,33 @@ public class ReservationPlace extends JFrame {
 		panelCommande.add(lblNewLabel_2_1);
 
 		JRadioButton rdbtnDiamant = new JRadioButton("Diamant");
+		rdbtnDiamant.setSelected(true);
 		buttonGroupCat.add(rdbtnDiamant);
 		rdbtnDiamant.setBounds(10, 83, 109, 23);
 		panelCommande.add(rdbtnDiamant);
 
-		JRadioButton rdbtnOr = new JRadioButton("OR");
+		JRadioButton rdbtnOr = new JRadioButton("Or");
+		rdbtnOr.setSelected(true);
 		buttonGroupCat.add(rdbtnOr);
 		rdbtnOr.setBounds(134, 83, 109, 23);
 		panelCommande.add(rdbtnOr);
 
 		JRadioButton rdbtnArgent = new JRadioButton("Argent");
+		rdbtnArgent.setSelected(true);
 		buttonGroupCat.add(rdbtnArgent);
 		rdbtnArgent.setBounds(10, 124, 109, 23);
 		panelCommande.add(rdbtnArgent);
 
 		JRadioButton rdbtnBronze = new JRadioButton("Bronze");
+		rdbtnBronze.setSelected(true);
 		buttonGroupCat.add(rdbtnBronze);
 		rdbtnBronze.setBounds(134, 124, 109, 23);
 		panelCommande.add(rdbtnBronze);
+
+		rdbtnDiamant.setActionCommand("Diamant");
+		rdbtnArgent.setActionCommand("Argent");
+		rdbtnOr.setActionCommand("Or");
+		rdbtnBronze.setActionCommand("Bronze");
 
 		JLabel lblNewLabel_2_1_1 = new JLabel("Mode de livraison : ");
 		lblNewLabel_2_1_1.setBounds(10, 168, 109, 14);
@@ -209,16 +252,19 @@ public class ReservationPlace extends JFrame {
 		rdbtnSurPlace.setBounds(10, 189, 109, 23);
 		panelCommande.add(rdbtnSurPlace);
 
-		JRadioButton rdbtnLivraisonPrior = new JRadioButton("Livraison  prior");
+		JRadioButton rdbtnLivraisonPrior = new JRadioButton("prior");
 		buttonGroupLivraison.add(rdbtnLivraisonPrior);
 		rdbtnLivraisonPrior.setBounds(134, 189, 144, 23);
 		panelCommande.add(rdbtnLivraisonPrior);
 
-		JRadioButton rdbtnRecommand = new JRadioButton("Livraison  recommand\u00E9");
+		JRadioButton rdbtnRecommand = new JRadioButton("recommandee");
 		buttonGroupLivraison.add(rdbtnRecommand);
 		rdbtnRecommand.setBounds(10, 215, 214, 23);
 		panelCommande.add(rdbtnRecommand);
 
+		rdbtnSurPlace.setActionCommand("Sur place");
+		rdbtnLivraisonPrior.setActionCommand("prior");
+		rdbtnRecommand.setActionCommand("recommandee");
 		JLabel lblNewLabel_2_1_1_1 = new JLabel("Payement :");
 		lblNewLabel_2_1_1_1.setBounds(10, 243, 109, 14);
 		panelCommande.add(lblNewLabel_2_1_1_1);
@@ -238,23 +284,18 @@ public class ReservationPlace extends JFrame {
 		rdbtnSepa.setBounds(10, 301, 109, 23);
 		panelCommande.add(rdbtnSepa);
 
-		JButton btnValider = new JButton("Valider");
-		btnValider.setBounds(13, 370, 89, 23);
-		panelCommande.add(btnValider);
-
-		JButton btnCancel = new JButton("Annuler");
-		btnCancel.setBounds(154, 370, 89, 23);
-		panelCommande.add(btnCancel);
+		rdbtnPaypal.setActionCommand("Paypal");
+		rdbtnVisa.setActionCommand("Visa");
+		rdbtnSepa.setActionCommand("Virement Sepa");
 
 		JLabel lblNewLabel_3 = new JLabel("Prix :");
 		lblNewLabel_3.setBounds(10, 331, 75, 14);
 		panelCommande.add(lblNewLabel_3);
 
 		JLabel lblPrix = new JLabel("");
+		lblPrix.setForeground(Color.RED);
 		lblPrix.setBounds(116, 331, 66, 14);
 		panelCommande.add(lblPrix);
-
-		
 
 		JLabel lblNewLabel_2_2 = new JLabel("Nombre de places");
 		lblNewLabel_2_2.setBounds(10, 36, 114, 14);
@@ -269,19 +310,21 @@ public class ReservationPlace extends JFrame {
 		lblDebout.setForeground(Color.RED);
 		lblDebout.setBounds(84, 62, 123, 14);
 		panelCommande.add(lblDebout);
-		
+
 		JButton btnReserver = new JButton("R\u00E9server place");
 		btnReserver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				specChoose = (Spectacle) list.getSelectedValue();
 				panelCommande.setVisible(true);
 				lblchoose.setVisible(false);
 				btnReserver.setVisible(false);
-				specChoose = (Spectacle) list.getSelectedValue();
-				spinner.setModel(new SpinnerNumberModel(1, 1, specChoose.getNbrPlaceParClient(), 1)); // limiter le
-																										// nombre de
+				lblPrix.setText("");
+				spinner.setModel(new SpinnerNumberModel(1, 1, specChoose.getNbrPlaceParClient(), 1)); // limiter le //
+																										// nombre de //
 																										// place
 				// set les catégories selon la configuration du spectacle choisi
-				if (specChoose.getConfig().getType().equals("Assis version cirque")) {
+				if (specChoose.getConfig().getType().equals("Assis version concert")) {
+					lblDebout.setText("");
 					rdbtnDiamant.setVisible(false);
 				} else if (specChoose.getConfig().getType().equals("Debout")) {
 					rdbtnDiamant.setVisible(false);
@@ -289,57 +332,89 @@ public class ReservationPlace extends JFrame {
 					rdbtnArgent.setVisible(false);
 					rdbtnBronze.setVisible(false);
 					lblDebout.setText("Place non numéroté");
+				} else {
+					lblDebout.setText("");
+					rdbtnDiamant.setVisible(true);
+					rdbtnOr.setVisible(true);
+					rdbtnArgent.setVisible(true);
+					rdbtnBronze.setVisible(true);
+
 				}
 			}
 		});
-		
 		btnReserver.setBounds(59, 357, 175, 23);
 		contentPane.add(btnReserver);
-
-		JButton btnInfo = new JButton("Information"); //voir les informations sur spectacle sélectionné
-		btnInfo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				specInfo = (Spectacle) list.getSelectedValue();
-				panelInfo.setVisible(true);
-				list.setVisible(false);
-				lblInfoTitre.setText(specInfo.getTitre());
-				lblInfoArtiste.setText(specInfo.getArtiste());
-				lblInfoConfig.setText(specInfo.getConfig().getType());
-				lblInfoHeureD.setText(specInfo.getRepresentation().getHeureDebut());
-				lblInfoHeureF.setText(specInfo.getRepresentation().getHeureFin());
-				for (var item : listPlanningSalle) {
-					if(item.getIdSpectacle()==specInfo.getId()) {
-						lblInfoDate.setText(item.getDateDebutR());
-					}
-				}
-							
-			}
-		});
-		btnInfo.setBounds(485, 95, 108, 23);
-		contentPane.add(btnInfo);
-		
-		
-		JButton btnReturn = new JButton("retour \u00E0 la liste"); // revenir à la liste des spectacles
-		btnReturn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				panelInfo.setVisible(false);
-				list.setVisible(true);
-				
-			}
-		});
-		btnReturn.setBounds(64, 256, 175, 23);
-		panelInfo.add(btnReturn);
-		
-		
-		
 		JButton btncalculer = new JButton("Calculer");
 		btncalculer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int somme;
-				
+				float somme = 0;
+				for (var item : specChoose.getConfig().getListCat()) {
+					if (item.getType().equals(buttonGroupCat.getSelection().getActionCommand())) {
+						somme = item.getPrix();
+					}
+				}
+				switch (buttonGroupLivraison.getSelection().getActionCommand().toString()) {
+				case "Sur place":
+					break;
+				case "prior":
+					somme += 1.21;
+					break;
+				case "recommandee":
+					somme += 10;
+					break;
+				}
+				somme = somme * (Integer) spinner.getValue();
+				lblPrix.setText(String.valueOf(somme) + " €");
+
 			}
 		});
 		btncalculer.setBounds(189, 327, 89, 23);
 		panelCommande.add(btncalculer);
+
+		JButton btnCancel = new JButton("Annuler");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelCommande.setVisible(false);
+				lblchoose.setVisible(true);
+				btnReserver.setVisible(true);
+			}
+		});
+		btnCancel.setBounds(154, 370, 89, 23);
+		panelCommande.add(btnCancel);
+
+		JButton btnValider = new JButton("Valider");// injection sql
+		btnValider.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				float somme = 0;
+				for (var item : specChoose.getConfig().getListCat()) {
+					if (item.getType().equals(buttonGroupCat.getSelection().getActionCommand())) {
+						somme = item.getPrix();
+					}
+				}
+				switch (buttonGroupLivraison.getSelection().getActionCommand().toString()) {
+				case "Sur place":
+					break;
+				case "prior":
+					somme += 1.21;
+					break;
+				case "recommandee":
+					somme += 10;
+					break;
+				}
+				somme = somme * (Integer) spinner.getValue();
+				Commande commande = new Commande(buttonGroupLivraison.getSelection().getActionCommand().toString(),
+						buttonGroupPayement.getSelection().getActionCommand().toString(), somme, idUser);
+				commande.createCommande();
+				Place place = new Place(buttonGroupCat.getSelection().getActionCommand().toString(),somme,(Integer) spinner.getValue(),specChoose.getId());
+				place.CreatePlace(place);
+				JOptionPane.showMessageDialog(null, "Procéder aux payement "+buttonGroupPayement.getSelection().getActionCommand().toString());
+				Home h= new Home(idUser);
+				h.setVisible(true);
+				dispose();
+			}
+		});
+		btnValider.setBounds(13, 370, 89, 23);
+		panelCommande.add(btnValider);
+
 	}
 }

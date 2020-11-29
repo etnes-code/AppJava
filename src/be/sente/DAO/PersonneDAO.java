@@ -12,8 +12,11 @@ import be.sente.ecole.EleveDAO;
 import be.sente.ecole.ProfesseurDAO;
 import be.sente.pojo.Artistes;
 import be.sente.pojo.Client;
+import be.sente.pojo.Commande;
 import be.sente.pojo.Organisateur;
 import be.sente.pojo.Personne;
+import be.sente.pojo.Place;
+import be.sente.pojo.PlanningSalle;
 import be.sente.pojo.Reservation;
 
 public class PersonneDAO extends DAO<Personne> {
@@ -85,8 +88,10 @@ public class PersonneDAO extends DAO<Personne> {
 
 	}
 
+	@SuppressWarnings("resource")
 	public Personne find(int id) {
 		Personne p = new Personne();
+		FactoryDAO adf = new FactoryDAO();
 		try {
 			ResultSet result = this.connect
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
@@ -98,21 +103,36 @@ public class PersonneDAO extends DAO<Personne> {
 					p = new Client(result.getInt("IdUser"), result.getString("Nom"), result.getString("Prenom"),
 							result.getString("Rue"), result.getInt("Numero"), result.getInt("CodePostal"),
 							result.getString("Ville"), result.getString("Email"), result.getString("Password"));
+					result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+							.executeQuery("SELECT * FROM Commande WHERE IdUser = " + p.getId());
+					Commande commande = new Commande();
+					DAO<Place> placedao = adf.getPlaceDAO();
+					while (result.next()) {
+						commande = new Commande(result.getInt("IdCommande"), result.getString("ModeLivraison"),
+								result.getString("ModePaiement"), result.getInt("TotalCommande"));
+						commande.setPlace(placedao.find(result.getInt("IdCommande")));
+						p.addToList(commande);
+					}
+
 					break;
 				case "Organisateur":
 					p = new Organisateur(result.getInt("IdUser"), result.getString("Nom"), result.getString("Prenom"),
 							result.getString("Rue"), result.getInt("Numero"), result.getInt("CodePostal"),
 							result.getString("Ville"), result.getString("Email"), result.getString("Password"));
-					FactoryDAO adf = new FactoryDAO();
-					DAO<Reservation> reservationdao = adf.getReservationDAO();
+
 					result = this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
-							.executeQuery("SELECT IdReservation FROM Reservation WHERE IdUser = " + p.getId());
+							.executeQuery("SELECT * FROM Reservation WHERE IdUser = " + p.getId());
+					Reservation reservation = new Reservation();
+					DAO<PlanningSalle> planningdao = adf.getPlanningSalleDAO();
 					while (result.next()) {
-						p.addToList(reservationdao.find(result.getInt("IdReservation")));
+						reservation = new Reservation(result.getInt("IdReservation"), result.getInt("Solde"),
+								result.getString("Statut"));
+						PlanningSalle plan = planningdao.find(result.getInt("IdReservation"));
+						reservation.setPlanning(plan);
+						p.addToList(reservation);
 					}
 					break;
 				}
-
 			}
 
 		} catch (SQLException e) {
@@ -126,6 +146,5 @@ public class PersonneDAO extends DAO<Personne> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 }
