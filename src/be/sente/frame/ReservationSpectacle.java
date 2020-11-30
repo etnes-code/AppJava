@@ -400,6 +400,9 @@ public class ReservationSpectacle extends JFrame {
 					catb.createCat();
 				}
 				JOptionPane.showMessageDialog(null, "Données enregistré");
+				Home h= new Home(user.getId());
+				h.setVisible(true);
+				dispose();
 			}
 		});
 		btnNewButton.setBounds(40, 384, 165, 23);

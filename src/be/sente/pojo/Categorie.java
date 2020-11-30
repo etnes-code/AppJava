@@ -13,6 +13,7 @@ public class Categorie implements Serializable {
 	private float prix;
 	private int nbrPlaceMax;
 	private int nbrPlaceRestante;
+	private int idConfig;
 	public Categorie() {}
 	public Categorie(String type, float prix, int nbrPlaceMax,int nbrPlaceRestante) {
 		super();
@@ -23,13 +24,19 @@ public class Categorie implements Serializable {
 	}
 	
 	
-	public Categorie(int id, String type, float prix, int nbrPlaceMax, int nbrPlaceRestante) {
+	public Categorie(int id, String type, float prix, int nbrPlaceMax, int nbrPlaceRestante, int idConfig) {
 		super();
 		this.id = id;
 		this.type = type;
 		this.prix = prix;
 		this.nbrPlaceMax = nbrPlaceMax;
 		this.nbrPlaceRestante = nbrPlaceRestante;
+		this.idConfig = idConfig;
+	}	
+	public Categorie(int nbrPlaceMax, int idConfig) { // pour la décrémentation des places restante
+		super();
+		this.nbrPlaceMax = nbrPlaceMax;
+		this.idConfig = idConfig;
 	}
 	public int getId() {
 		return id;
@@ -63,10 +70,24 @@ public class Categorie implements Serializable {
 	public void setNbrPlaceMax(int nbrPlaceMax) {
 		this.nbrPlaceMax = nbrPlaceMax;
 	}
+	
+	
+	
+	public int getIdConfig() {
+		return idConfig;
+	}
+	public void setIdConfig(int idConfig) {
+		this.idConfig = idConfig;
+	}
 	public void createCat() {
 		FactoryDAO adf=new FactoryDAO();
 		DAO<Categorie> categoriedao=adf.getCategorieDAO();
 		categoriedao.create(this);
+	}
+	public void UpdateCatPlace() { //pour décrementer le nombre de place restante
+		FactoryDAO adf=new FactoryDAO();
+		DAO<Categorie> categoriedao=adf.getCategorieDAO();
+		categoriedao.update(this);		
 	}
 		
 

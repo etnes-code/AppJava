@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 
 import be.sente.DAO.DAO;
 import be.sente.DAO.FactoryDAO;
+import be.sente.pojo.Categorie;
 import be.sente.pojo.Client;
 import be.sente.pojo.Commande;
 import be.sente.pojo.Place;
@@ -352,6 +353,9 @@ public class ReservationPlace extends JFrame {
 					if (item.getType().equals(buttonGroupCat.getSelection().getActionCommand())) {
 						somme = item.getPrix();
 					}
+					if (item.getType().equals("Place non numeroté")) {
+						somme=item.getPrix();
+					}
 				}
 				switch (buttonGroupLivraison.getSelection().getActionCommand().toString()) {
 				case "Sur place":
@@ -390,6 +394,9 @@ public class ReservationPlace extends JFrame {
 					if (item.getType().equals(buttonGroupCat.getSelection().getActionCommand())) {
 						somme = item.getPrix();
 					}
+					if (item.getType().equals("Place non numeroté")) {
+						somme=item.getPrix();
+					}
 				}
 				switch (buttonGroupLivraison.getSelection().getActionCommand().toString()) {
 				case "Sur place":
@@ -405,8 +412,15 @@ public class ReservationPlace extends JFrame {
 				Commande commande = new Commande(buttonGroupLivraison.getSelection().getActionCommand().toString(),
 						buttonGroupPayement.getSelection().getActionCommand().toString(), somme, idUser);
 				commande.createCommande();
-				Place place = new Place(buttonGroupCat.getSelection().getActionCommand().toString(),somme,(Integer) spinner.getValue(),specChoose.getId());
+				Place place = new Place(buttonGroupCat.getSelection().getActionCommand().toString(),somme,(Integer) spinner.getValue(),specChoose.getRepresentation().getId());
 				place.CreatePlace(place);
+				Categorie cat= new Categorie();
+				for (var item : specChoose.getConfig().getListCat()) {
+					if(item.getType().equals(buttonGroupCat.getSelection().getActionCommand())){
+						 cat= new Categorie(item.getNbrPlaceRestante()-(Integer) spinner.getValue(),item.getIdConfig());					
+					}							
+				}
+				cat.UpdateCatPlace();
 				JOptionPane.showMessageDialog(null, "Procéder aux payement "+buttonGroupPayement.getSelection().getActionCommand().toString());
 				Home h= new Home(idUser);
 				h.setVisible(true);

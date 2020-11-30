@@ -59,7 +59,7 @@ public class ConfigurationDAO extends DAO<Configuration> {
 			Categorie categorie = new Categorie();
 			while (result.next()) {
 				categorie = new Categorie(result.getInt("IdCategorie"), result.getString("Type"), result.getInt("Prix"),
-						result.getInt("NbrPlaceMax"), result.getInt("NbrPlaceRestante"));
+						result.getInt("NbrPlaceMax"), result.getInt("NbrPlaceRestante"),result.getInt("IdConfiguration"));
 				config.addToListCat(categorie);
 			}
 		} catch (SQLException e) {

@@ -3,6 +3,7 @@ package be.sente.DAO;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import be.sente.pojo.Categorie;
 import be.sente.pojo.Configuration;
@@ -39,7 +40,16 @@ public class CategorieDAO extends DAO<Categorie> {
 	}
 
 	public boolean update(Categorie obj) {
-		return false;
+		try {
+
+			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
+					.executeUpdate("UPDATE Categorie SET NbrPlaceRestante = "+obj.getNbrPlaceRestante()+" WHERE IdConfiguration = "+obj.getIdConfig());
+			return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public Categorie find(int id) {
@@ -49,7 +59,9 @@ public class CategorieDAO extends DAO<Categorie> {
 					.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
 					.executeQuery("SELECT * FROM Categorie WHERE IdConfiguration = " + id);
 			if (result.first())
-				cat = new Categorie(result.getInt("IdCategorie"),result.getString("Type"),result.getInt("Prix"),result.getInt("NbrPlaceMax"),result.getInt("NbrPlaceRestante"));
+				cat = new Categorie(result.getInt("IdCategorie"), result.getString("Type"), result.getInt("Prix"),
+						result.getInt("NbrPlaceMax"), result.getInt("NbrPlaceRestante"),
+						result.getInt("IdConfiguration"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -57,6 +69,12 @@ public class CategorieDAO extends DAO<Categorie> {
 	}
 
 	public Categorie findUser(String mail, String pwd) {
+		return null;
+	}
+
+	@Override
+	public ArrayList<Categorie> getALL() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -36,7 +36,7 @@ public class PlanningSalleDAO extends DAO<PlanningSalle> {
 			}
 			this.connect.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeUpdate(
 					"INSERT INTO PlanningSalle(DateDebut,DateFin,IdUser,IdSpectacle,IdReservation) VALUES ('"
-							+ obj.getDateDebutR() + "','" + obj.getDateFinR() + "',1," + max_id + "," + max_id2 + ")");
+							+ obj.getDateDebutR() + "','" + obj.getDateFinR() + "',10," + max_id + "," + max_id2 + ")");
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -70,6 +70,8 @@ public class Home extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		
 
 		JPanel panelClient = new JPanel();
 		panelClient.setBounds(10, 82, 604, 348);
@@ -78,28 +80,61 @@ public class Home extends JFrame {
 
 		panelClient.setVisible(false);
 
-		
-
-		JButton btnInformation = new JButton("Information");
-		btnInformation.setBounds(170, 93, 99, 60);
-		panelClient.add(btnInformation);
-
-		JButton btnNewSpectacle_3 = new JButton("Nouveau");
-		btnNewSpectacle_3.setBounds(29, 198, 99, 60);
-		panelClient.add(btnNewSpectacle_3);
-
-		JButton btnNewSpectacle_4 = new JButton("Nouveau");
-		btnNewSpectacle_4.setBounds(170, 198, 99, 60);
-		panelClient.add(btnNewSpectacle_4);
-
-		
-		
-		
-		
-
 		JLabel titlelistbuy = new JLabel("Liste de vos achats");
 		titlelistbuy.setBounds(303, 11, 266, 21);
 		panelClient.add(titlelistbuy);
+		
+		
+		user = user.getUser(id);
+		Client client = new Client();
+		if (user.getClass().getSimpleName().equals("Client")) {
+			panelClient.setVisible(true);
+			client = (Client) user;
+		}
+		Organisateur orga = new Organisateur();
+		if (user.getClass().getSimpleName().equals("Organisateur")) {
+
+			orga = (Organisateur) user;
+		}
+		// affichage de la liste des réservation de l'organisateur
+		ArrayList<Spectacle> listSpec = new ArrayList<Spectacle>();
+		for (var item : orga.getListReservation()) {
+			listSpec.add(item.getPlanning().getSpectacle());
+		}
+
+		// affichage de la liste des commande du client
+		ArrayList<Commande> listCom = new ArrayList<Commande>();
+		for (Commande item : client.getListCommande()) {
+			listCom.add(item);
+		}
+		
+		
+		
+
+		JList listCommande = new JList();
+		listCommande.setBounds(303, 36, 291, 312);
+		panelClient.add(listCommande);
+		listCommande.setModel(new AbstractListModel() {
+			ArrayList<Commande> values = listCom;
+
+			public int getSize() {
+				return values.size();
+			}
+
+			public Commande getElementAt(int index) {
+				return values.get(index);
+			}
+		});
+		JButton btnBuy = new JButton("Acheter");
+		btnBuy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReservationPlace w = new ReservationPlace(user.getId());
+				w.setVisible(true);
+				dispose();
+			}
+		});
+		btnBuy.setBounds(103, 118, 99, 60);
+		panelClient.add(btnBuy);
 
 		JPanel panelOrga = new JPanel();
 		panelOrga.setBounds(10, 82, 604, 348);
@@ -122,32 +157,6 @@ public class Home extends JFrame {
 		});
 		btnNewSpectacle.setBounds(29, 93, 99, 60);
 		panelOrga.add(btnNewSpectacle);
-
-		JButton btnInfo;
-
-		JButton btnUpdate = new JButton("Modifier");
-		btnUpdate.setBounds(29, 198, 99, 60);
-		panelOrga.add(btnUpdate);
-
-		JButton btnNewButton_3 = new JButton("New button");
-		btnNewButton_3.setBounds(170, 198, 99, 60);
-		panelOrga.add(btnNewButton_3);
-		user = user.getUser(id);
-		Client client= new Client();
-		if (user.getClass().getSimpleName().equals("Client")) {
-			panelClient.setVisible(true);		
-			client= (Client)user;
-		}
-		Organisateur orga = new Organisateur();
-		if (user.getClass().getSimpleName().equals("Organisateur")) {
-			
-			orga = (Organisateur) user;
-		}
-		//affichage de la liste des réservation de l'organisateur
-		ArrayList<Spectacle> listSpec = new ArrayList<Spectacle>();
-		for (var item : orga.getListReservation()) {
-			listSpec.add(item.getPlanning().getSpectacle());
-		}
 		listSpectacle.setModel(new AbstractListModel() {
 			ArrayList<Spectacle> values = listSpec;
 
@@ -156,26 +165,6 @@ public class Home extends JFrame {
 			}
 
 			public Spectacle getElementAt(int index) {
-				return values.get(index);
-			}
-		});
-		
-		JList listCommande = new JList();
-		listCommande.setBounds(303, 36, 291, 312);
-		panelClient.add(listCommande);
-		
-		// affichage de la liste des commande du client
-		ArrayList<Commande>listCom= new ArrayList<Commande>();
-		for (Commande item : client.getListCommande()) {
-			listCom.add(item);
-		}
-		listCommande.setModel(new AbstractListModel() {
-			ArrayList<Commande> values = listCom;
-
-			public int getSize() {
-				return values.size();
-			}
-			public Commande getElementAt(int index) {
 				return values.get(index);
 			}
 		});
@@ -231,6 +220,9 @@ public class Home extends JFrame {
 		btnInfoSpec.setBounds(170, 93, 99, 60);
 		panelOrga.add(btnInfoSpec);
 
+		JButton btnInfo;
+		
+
 		JLabel lblTitleSpectacle = new JLabel("Liste de vos r\u00E9servation");
 		lblTitleSpectacle.setFont(new Font("Trebuchet MS", Font.PLAIN, 12));
 		lblTitleSpectacle.setBounds(329, 82, 245, 25);
@@ -256,16 +248,6 @@ public class Home extends JFrame {
 				deco.setVisible(true);
 			}
 		});
-		JButton btnBuy = new JButton("Acheter");
-		btnBuy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ReservationPlace w = new ReservationPlace(user.getId());
-				w.setVisible(true);
-				dispose();
-			}
-		});
-		btnBuy.setBounds(29, 93, 99, 60);
-		panelClient.add(btnBuy);
 
 	}
 }

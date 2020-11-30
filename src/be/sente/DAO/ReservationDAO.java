@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import be.sente.ecole.Eleve;
 import be.sente.pojo.Categorie;
@@ -78,6 +79,12 @@ public class ReservationDAO extends DAO<Reservation> {
 	}
 
 	public Reservation findUser(String mail, String pwd) {
+		return null;
+	}
+
+	@Override
+	public ArrayList<Reservation> getALL() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
